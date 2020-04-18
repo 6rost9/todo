@@ -1,4 +1,4 @@
-import { observable, computed, action, intercept, autorun } from 'mobx';
+import { observable, computed, action, autorun } from 'mobx';
 import { v1 } from 'uuid';
 
 export class TodoList {
