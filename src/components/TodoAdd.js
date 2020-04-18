@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useStore} from "../helpers/use-store";
-import {makeStyles, TextField, IconButton, Box} from "@material-ui/core";
 import {
-    Add as AddIcon,
-} from '@material-ui/icons';
+    makeStyles,
+    TextField,
+    IconButton,
+    Box
+} from "@material-ui/core";
+import {Add as AddIcon} from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     root: {

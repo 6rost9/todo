@@ -11,7 +11,6 @@ import {
     IconButton
 } from '@material-ui/core';
 import {
-    Save as SaveIcon,
     Delete as DeleteIcon,
     Edit as EditIcon,
 } from '@material-ui/icons';

@@ -3,7 +3,15 @@ import {useStore} from "../helpers/use-store";
 import {useObserver} from "mobx-react";
 import {TodoAdd} from "./TodoAdd";
 import {TodoItem} from "./TodoItem";
-import {makeStyles, Container, Grid, Typography, Paper, List} from '@material-ui/core';
+import {
+    makeStyles,
+    Container,
+    Grid,
+    Typography,
+    Paper,
+    List,
+    Divider
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,7 +56,12 @@ export const TodoList = () => {
                     <Paper className={classes.paper} >
                         {todoList.getSorted.length ?
                             <List>
-                                {todoList.getSorted.map(todo => <TodoItem key={todo.id} todo={todo} />)}
+                                {todoList.getSorted.map((todo, i, arr) => {
+                                    return(<React.Fragment key={todo.id} >
+                                        <TodoItem todo={todo} />
+                                        {i !== arr.length - 1 && <Divider/>}
+                                    </React.Fragment>);
+                                })}
                             </List>
                             :
                             <Typography
@@ -65,7 +78,6 @@ export const TodoList = () => {
                     <TodoAdd/>
                 </Grid>
             </Grid>
-
         </Container>
     ));
 }

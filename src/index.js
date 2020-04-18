@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import {StoreProvider} from "./helpers/store-provider";
 import {TodoList} from "./store/todo";
-
 import * as serviceWorker from './serviceWorker';
 
 const todoList = new TodoList();

@@ -1,28 +1,21 @@
-import { observable, computed, action } from 'mobx';
+import { observable, computed, action, intercept, autorun } from 'mobx';
 import { v1 } from 'uuid';
 
 export class TodoList {
 
-    @observable items = [
-        {
-            id: '1',
-            title: 'Some todo',
-            description: 'Some description',
-            done: false,
-        },
-        {
-            id: '2',
-            title: 'Another some todo',
-            description: 'Some description',
-            done: false,
-        },
-        {
-            id: '3',
-            title: 'Created todo item',
-            description: 'Some description',
-            done: true,
+    constructor() {
+        let localTasks = localStorage.getItem('tasks');
+
+        if (localTasks !== null) {
+            this.items = JSON.parse(localTasks);
         }
-    ];
+
+        autorun( reaction => {
+            localStorage.setItem('tasks', JSON.stringify(this.items));
+        });
+    }
+
+    @observable items = [];
 
     @action add = (item) => {
         this.items.push({
@@ -61,4 +54,6 @@ export class TodoList {
     getIndexById(id) {
         return this.items.findIndex(el => el.id === id);
     }
+
 }
+
