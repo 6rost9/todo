@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useStore} from "../helpers/use-store";
+import {EditModal} from "./EditModal";
 import {
     makeStyles,
     ListItem,
@@ -27,47 +28,66 @@ const useStyles = makeStyles((theme) => ({
 export const TodoItem = ({todo}) => {
     const classes = useStyles();
     const todoList = useStore();
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleToggle = () => {
         todoList.toggleDone(todo.id);
     };
 
+    const toggleDialog = () => {
+        setIsOpen(!isOpen);
+    }
+
+    const remove = () => {
+        todoList.remove(todo.id);
+    }
+
     const labelId = `checkbox-list-label-`;
 
-    return (<ListItem
-        role={undefined}
-        dense
-        button
-        onClick={handleToggle}
-    >
-        <ListItemIcon>
-            <Checkbox
-                edge="start"
-                checked={todo.done}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ 'aria-labelledby': labelId }}
+    return (<>
+        <ListItem
+            role={undefined}
+            dense
+            button
+            onClick={handleToggle}
+        >
+            <ListItemIcon>
+                <Checkbox
+                    edge="start"
+                    checked={todo.done}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': labelId }}
+                />
+            </ListItemIcon>
+            <ListItemText
+                classes={{
+                    secondary: classes.secondary,
+                }}
+                id={labelId}
+                primary={todo.title}
+                secondary={todo.description}
             />
-        </ListItemIcon>
-        <ListItemText
-            classes={{
-                secondary: classes.secondary,
-            }}
-            id={labelId}
-            primary={todo.title}
-            secondary={todo.description}
+            <ListItemSecondaryAction>
+                <IconButton
+                    onClick={toggleDialog}
+                    aria-label="comments"
+                >
+                    <EditIcon />
+                </IconButton>
+                <IconButton
+                    edge="end"
+                    aria-label="comments"
+                    onClick={remove}
+                >
+                    <DeleteIcon />
+                </IconButton>
+            </ListItemSecondaryAction>
+        </ListItem>
+        <EditModal
+            todo={todo}
+            open={isOpen}
+            handleClose={toggleDialog}
         />
-        <ListItemSecondaryAction>
-            <IconButton  aria-label="comments">
-                <EditIcon />
-            </IconButton>
-            <IconButton
-                edge="end"
-                aria-label="comments"
-                onClick={todoList.remove.bind(null, todo.id)}
-            >
-                <DeleteIcon />
-            </IconButton>
-        </ListItemSecondaryAction>
-    </ListItem>);
+    </>);
 }

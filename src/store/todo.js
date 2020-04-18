@@ -32,8 +32,12 @@ export class TodoList {
         });
     }
 
-    @action update = (id) => {
-        // console.log(this.getIndexById(id));
+    @action update = (id, values) => {
+        let i = this.getIndexById(id);
+        this.items[i] = {
+            ...this.items[i],
+            ...values
+        };
     }
 
     @action remove = (id) => {
@@ -46,10 +50,7 @@ export class TodoList {
             ...this.items[i],
             done: !this.items[i].done
         };
-
-
     }
-
 
     @computed get getSorted(){
         return this.items.sort((a,b) => {
