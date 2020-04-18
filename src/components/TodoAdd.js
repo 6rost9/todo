@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, {useEffect, useState} from 'react';
 import {useStore} from "../helpers/use-store";
 import {makeStyles, TextField, IconButton, Box} from "@material-ui/core";
 import {
@@ -23,19 +23,36 @@ const useStyles = makeStyles((theme) => ({
 export const TodoAdd = () => {
     const classes = useStyles();
 
-    const [title, setTitle] = useState('');
+    const [values, setValues] = useState({
+        title: '',
+        description: '',
+    });
+
+    const [disabled ,setDisabled] = useState(true);
 
     const todoList = useStore();
 
     const handleChange = (e) => {
-        setTitle(e.target.value);
+        setValues({
+            ...values,
+            [e.target.name]: e.target.value,
+        })
     }
 
+    useEffect(()=>{
+        if (values.title !== ''){
+            setDisabled(false);
+        } else {
+            setDisabled(true);
+        }
+    },[values.title])
+
     const addTodo = () => {
-        todoList.add({
-            title,
-        })
-        setTitle('');
+        todoList.add(values);
+        setValues({
+            title: '',
+            description: '',
+        });
     }
 
     return (<>
@@ -44,10 +61,14 @@ export const TodoAdd = () => {
                 <TextField
                     name='title'
                     label='Title'
+                    value={values.title}
+                    onChange={handleChange}
                 />
                 <TextField
                     name='description'
                     label='Description'
+                    value={values.description}
+                    onChange={handleChange}
                     multiline
                 />
             </Box>
@@ -55,6 +76,8 @@ export const TodoAdd = () => {
                 className={classes.icon}
                 color="primary"
                 component="span"
+                disabled={disabled}
+                onClick={addTodo}
             >
                 <AddIcon />
             </IconButton>

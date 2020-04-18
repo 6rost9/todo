@@ -36,6 +36,20 @@ export class TodoList {
         // console.log(this.getIndexById(id));
     }
 
+    @action remove = (id) => {
+        this.items.splice(this.getIndexById(id), 1);
+    }
+
+    @action toggleDone = (id) => {
+        let i = this.getIndexById(id);
+        this.items[i] = {
+            ...this.items[i],
+            done: !this.items[i].done
+        };
+
+
+    }
+
 
     @computed get getSorted(){
         return this.items.sort((a,b) => {

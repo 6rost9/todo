@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
+    secondary: {
+        whiteSpace: 'pre-line',
+    }
 }));
 
 export const TodoItem = ({todo}) => {
@@ -26,12 +29,17 @@ export const TodoItem = ({todo}) => {
     const todoList = useStore();
 
     const handleToggle = () => {
-
+        todoList.toggleDone(todo.id);
     };
 
     const labelId = `checkbox-list-label-`;
 
-    return (<ListItem key={todo.id} role={undefined} dense button onClick={handleToggle}>
+    return (<ListItem
+        role={undefined}
+        dense
+        button
+        onClick={handleToggle}
+    >
         <ListItemIcon>
             <Checkbox
                 edge="start"
@@ -42,6 +50,9 @@ export const TodoItem = ({todo}) => {
             />
         </ListItemIcon>
         <ListItemText
+            classes={{
+                secondary: classes.secondary,
+            }}
             id={labelId}
             primary={todo.title}
             secondary={todo.description}
@@ -50,7 +61,11 @@ export const TodoItem = ({todo}) => {
             <IconButton  aria-label="comments">
                 <EditIcon />
             </IconButton>
-            <IconButton edge="end" aria-label="comments">
+            <IconButton
+                edge="end"
+                aria-label="comments"
+                onClick={todoList.remove.bind(null, todo.id)}
+            >
                 <DeleteIcon />
             </IconButton>
         </ListItemSecondaryAction>

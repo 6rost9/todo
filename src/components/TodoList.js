@@ -46,9 +46,18 @@ export const TodoList = () => {
                     className={classes.list}
                 >
                     <Paper className={classes.paper} >
-                        <List>
-                            {todoList.getSorted.map(todo => <TodoItem key={todo.id} todo={todo} />)}
-                        </List>
+                        {todoList.getSorted.length ?
+                            <List>
+                                {todoList.getSorted.map(todo => <TodoItem key={todo.id} todo={todo} />)}
+                            </List>
+                            :
+                            <Typography
+                                align='center'
+                            >
+                                Nothing to do
+                            </Typography>
+                        }
+
                     </Paper>
 
                 </Grid>
